@@ -20,9 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-It can be helpful in your business objects to define a class method that references
-an instance method. For example, say you have a class called `UserKeyGenerator` which is 
-designed to generate a key (String) and assign it to a User:
+It can be helpful in your business objects to define a class method that acts as a factory for that class. For example, let's say you have a class called `UserKeyGenerator` which is designed to generate a key (String) and assign it to a User:
 
 ```ruby
 class User
@@ -46,9 +44,7 @@ The code above defines the API for `UserKeyGenerator` as the following:
 
 `UserKeyGenerator.new(some_user, 5).generate`
 
-In the interest of creating a cleaner and more concise API for `UserKeyGenerator`
-we could define a class method that references the instance method. In this way,
-the class acts as a sort of factory of itself:
+In the interest of creating a cleaner and more concise API for `UserKeyGenerator` we could define a class method that acts as a factory of that class and in turn calls the corresponding instance method:
 
 ```ruby
 class UserKeyGenerator
@@ -66,15 +62,13 @@ class UserKeyGenerator
 end
 ```
 
-This yeilds us a much cleaner and more concise internal interface for using `UserKeyGenerator`:
+This yeilds us a much cleaner and more concise interface for using `UserKeyGenerator` while still affording us all the power of a ruby object instance:
 
-`UserKeyGenerator.generate(some_user, 5)'
+`UserKeyGenerator.generate(some_user, 5)`
 
 This is where `simple_factory` comes in...
 
-By requiring `SimpleFactory` in your business object, you give that object access to the 
-`simple_factory` method which creates the class level interface for your instance methods.
-Just pass the instance method name to `simple_factory` as a symbol:
+By requiring `SimpleFactory` in your business object, you give that object access to the `simple_factory` method which creates the class level interface for your instance methods. Just pass the instance method name to `simple_factory` as a symbol:
 
 ```ruby
 class UserKeyGenerator
@@ -92,13 +86,11 @@ class UserKeyGenerator
 end
 ```
 
-The code above dynamically creates a class method called `generate` in `UserKeyGenerator`
-that takes the same arguements as the initializer. Thus the interface remains the same
-as in the previous example:
+The code above dynamically creates a class method called `generate` in `UserKeyGenerator` that takes the same arguements as the initializer. Thus the interface remains the same as in the previous example:
 
-`UserKeyGenerator.generate(some_user, 5)'
+`UserKeyGenerator.generate(some_user, 5)`
 
-The `simple_factory` method can take multiple arguements: 
+The `simple_factory` method can also take multiple arguements: 
 
 ```ruby
 class UserKeyGenerator
@@ -124,9 +116,7 @@ class UserKeyGenerator
 end
 ```
 
-This can be very handy for business objects with a lot of specialized behavior 
-that would benefit from a class level interface but wants to make use of all of 
-the power of a ruby object instance (eg. getters, setters, initializers, etc.)
+This can be very handy for business objects with a lot of specialized behavior that would benefit from a class level interface but want to make use of all of the power of a ruby object instance (eg. getters, setters, initializers, etc.)
 
 ## Development
 
